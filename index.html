@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Multiverso | Práctica Web Submódulo 1</title>
+    
+    <!-- Tailwind CSS (CDN para asegurar responsividad total) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Tipografías de Google Fonts: Orbitron (Títulos) e Inter (Texto base) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome para Iconografía de botones y secciones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- ESTILOS CSS (Simulación de archivo CSS externo vinculado e integrado) -->
+    <style>
+        /* =========================================================
+           HOJA DE ESTILOS GENERAL - TEMA ESPACIAL / MULTIVERSO
+           ========================================================= */
+        :root {
+            --bg-dark: #04040a;
+            --purple-neon: #a855f7;
+            --cyan-neon: #06b6d4;
+            --pink-neon: #ec4899;
+            --glass-bg: rgba(15, 23, 42, 0.85);
+            --border-glow: rgba(168, 85, 247, 0.35);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+
+        .font-orbitron {
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        /* Fondo espacial profundo con nebulosas simuladas */
+        .universe-bg {
+            background: 
+                radial-gradient(circle at 10% 20%, rgba(168, 85, 247, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.18) 0%, transparent 40%),
+                radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 50%),
+                #030308;
+            background-attachment: fixed;
+        }
+
+        /* Tarjetas con efecto Glassmorphism y sombras Neón */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--border-glow);
+            border-radius: 1.25rem;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .glass-panel:hover {
+            border-color: rgba(168, 85, 247, 0.7);
+            box-shadow: 0 10px 35px -5px rgba(168, 85, 247, 0.35);
+            transform: translateY(-3px);
+        }
+
+        /* =========================================================
+           ESTILOS OBLIGATORIOS PARA LA TABLA AVANZADA (Rúbrica §3)
+           Incluye bordes neón, colores, filas alternadas y alineaciones
+           ========================================================= */
+        .tabla-multiverso-avanzada {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            border: 2px solid var(--purple-neon);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 25px rgba(168, 85, 247, 0.3);
+            margin: 1.5rem 0;
+        }
+
+        .tabla-multiverso-avanzada th {
+            background: linear-gradient(135deg, #3b0764 0%, #1e1b4b 100%);
+            color: #f3e8ff;
+            padding: 16px;
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--purple-neon);
+            border-right: 1px solid rgba(168, 85, 247, 0.3);
+        }
+
+        .tabla-multiverso-avanzada td {
+            padding: 14px 18px;
+            border-bottom: 1px solid rgba(168, 85, 247, 0.2);
+            border-right: 1px solid rgba(168, 85, 247, 0.2);
+            font-size: 0.9rem;
+        }
+
+        .tabla-multiverso-avanzada tr:nth-child(even) {
+            background-color: rgba(30, 27, 75, 0.4);
+        }
+
+        .tabla-multiverso-avanzada tr:nth-child(odd) {
+            background-color: rgba(15, 23, 42, 0.7);
+        }
+
+        .tabla-multiverso-avanzada tr:hover td {
+            background-color: rgba(168, 85, 247, 0.2);
+            color: #ffffff;
+        }
+
+        /* =========================================================
+           ESTILOS OBLIGATORIOS PARA MARQUESINAS (<marquee>) (Rúbrica §3)
+           ========================================================= */
+        .marquee-box {
+            background: rgba(15, 23, 42, 0.95);
+            border-top: 1px solid rgba(168, 85, 247, 0.5);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.5);
+            font-family: monospace;
+        }
+
+        /* Control de visibilidad para navegación multi-página en un solo archivo */
+        .pagina-seccion {
+            display: none;
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .pagina-seccion.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="universe-bg min-h-screen flex flex-col justify-between">
+
+    <!-- =========================================================
+         REQUISITO 1: PRIMERA MARQUESINA (<marquee>) - NOTICIAS CÓSMICAS
+         ========================================================= -->
+    <div class="marquee-box py-2 text-cyan-300 text-xs md:text-sm shadow-lg z-50">
+        <marquee behavior="scroll" direction="left" scrollamount="6">
+            🌌 <strong>BOLETÍN DE FÍSICA TEÓRICA:</strong> Confirmadas nuevas anomalías térmicas en la radiación de fondo de microondas que sugieren colisiones con universos vecinos. &nbsp;&nbsp;&nbsp;&nbsp;
+            ⚛️ <strong>MECÁNICA CUÁNTICA:</strong> El colapso del estado de superposición reafirma la teoría de los Muchos Mundos de Everett. &nbsp;&nbsp;&nbsp;&nbsp;
+            🚀 <strong>SUBMÓDULO 1:</strong> Proyecto Web "El Multiverso" - Evaluación para el 11 de Noviembre de 2026.
+        </marquee>
+    </div>
+
+    <!-- =========================================================
+         ENCABEZADO GENERAL Y MENÚ DE NAVEGACIÓN (Rúbrica §3)
+         Navegación funcional entre las 4 páginas del sitio
+         ========================================================= -->
+    <header class="sticky top-0 z-40 bg-slate-950/90 backdrop-blur-md border-b border-purple-900/60 shadow-xl">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col md:flex-row justify-between items-center gap-4">
+            
+            <!-- Logotipo Institucional / Tema -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="cambiarPagina('inicio')">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center shadow-lg shadow-purple-600/40">
+                    <i class="fa-solid fa-infinity text-white text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-orbitron font-extrabold text-xl md:text-2xl text-transparent bg-clip-text bg-gradient-to-r from-purple-400 via-pink-400 to-cyan-400">
+                        EL MULTIVERSO
+                    </h1>
+                    <p class="text-[10px] text-purple-300 font-mono tracking-wider">CONSTRUYE APLICACIONES WEB - PRÁCTICA</p>
+                </div>
+            </div>
+
+            <!-- Menú de Navegación Funcional de 4 Páginas -->
+            <nav class="flex flex-wrap justify-center gap-2 bg-slate-900/80 p-1.5 rounded-2xl border border-purple-800/40">
+                <button id="nav-inicio" onclick="cambiarPagina('inicio')" class="btn-nav px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition bg-purple-600 text-white shadow-md">
+                    <i class="fa-solid fa-house mr-1.5"></i> 1. Inicio
+                </button>
+                <button id="nav-contenido" onclick="cambiarPagina('contenido')" class="btn-nav px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-purple-900/40">
+                    <i class="fa-solid fa-atom mr-1.5"></i> 2. Contenido
+                </button>
+                <button id="nav-adicional" onclick="cambiarPagina('adicional')" class="btn-nav px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-purple-900/40">
+                    <i class="fa-solid fa-table-list mr-1.5"></i> 3. Info Adicional
+                </button>
+                <button id="nav-contacto" onclick="cambiarPagina('contacto')" class="btn-nav px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-purple-900/40">
+                    <i class="fa-solid fa-paper-plane mr-1.5"></i> 4. Contacto
+                </button>
+            </nav>
+
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER PARA LAS 4 PÁGINAS SOLICITADAS -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
+
+        <!-- =========================================================
+             PÁGINA 1: INICIO (Rúbrica §3 - Página de Inicio)
+             ========================================================= -->
+        <section id="inicio" class="pagina-seccion active space-y-10">
+            
+            <!-- Hero Banner Principal -->
+            <div class="glass-panel p-8 md:p-14 relative overflow-hidden text-center md:text-left">
+                <div class="max-w-3xl space-y-6 relative z-10">
+                    <span class="inline-block px-3 py-1 rounded-full text-xs font-mono bg-purple-950/80 text-purple-300 border border-purple-700/60 uppercase">
+                        Cosmología Moderna & Física Cuántica
+                    </span>
+                    <h2 class="font-orbitron text-3xl sm:text-5xl font-black text-white leading-tight">
+                        Explorando las Fronteras de los <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-400 to-pink-500">Mundos Paralelos</span>
+                    </h2>
+                    <p class="text-slate-300 text-base md:text-lg leading-relaxed">
+                        El <strong>Multiverso</strong> es la hipótesis física y filosófica que sugiere la existencia de múltiples universos coexistentes. Juntos, estos universos abarcan todo lo que existe: el espacio, el tiempo, la materia, la energía y las leyes físicas que los rigen.
+                    </p>
+                    <div class="flex flex-wrap gap-4 justify-center md:justify-start pt-2">
+                        <button onclick="cambiarPagina('contenido')" class="px-6 py-3.5 rounded-xl font-bold bg-gradient-to-r from-purple-600 to-pink-600 text-white shadow-lg shadow-purple-600/30 hover:scale-105 transition">
+                            Ver Clasificación de Tegmark <i class="fa-solid fa-arrow-right ml-2"></i>
+                        </button>
+                        <button onclick="cambiarPagina('adicional')" class="px-6 py-3.5 rounded-xl font-bold bg-slate-800 text-purple-300 border border-purple-800 hover:bg-slate-700 transition">
+                            Consultar Tabla Avanzada
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sección de Tarjetas Descriptivas de Inicio -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-panel p-6 space-y-3">
+                    <div class="w-12 h-12 rounded-lg bg-purple-900/40 border border-purple-500/40 flex items-center justify-center text-purple-400 text-xl">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white">¿Qué es un Universo Burbuja?</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Regiones aisladas del espacio que se expanden eternamente tras el Big Bang, formando bolsillos independientes con sus propias constantes físicas.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 space-y-3">
+                    <div class="w-12 h-12 rounded-lg bg-cyan-900/40 border border-cyan-500/40 flex items-center justify-center text-cyan-400 text-xl">
+                        <i class="fa-solid fa-code-branch"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white">Ramificación Cuántica</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        Según la interpretación de los Muchos Mundos, cada decisión a nivel cuántico divide la realidad creando un nuevo universo alterno.
+                    </p>
+                </div>
+
+                <div class="glass-panel p-6 space-y-3">
+                    <div class="w-12 h-12 rounded-lg bg-pink-900/40 border border-pink-500/40 flex items-center justify-center text-pink-400 text-xl">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </div>
+                    <h3 class="font-orbitron font-bold text-lg text-white">Dimensiones Ocultas</h3>
+                    <p class="text-slate-400 text-sm leading-relaxed">
+                        La Teoría de Cuerdas propone que nuestro universo visible es solo una membrana tridimensional flotando en un espacio de 11 dimensiones.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Galería de Imágenes Pertinentes (Rúbrica §3) -->
+            <div class="glass-panel p-6 md:p-8 space-y-6">
+                <h3 class="font-orbitron font-bold text-xl text-white text-center">Representación Visual del Cosmos</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div class="rounded-xl overflow-hidden border border-purple-900/60">
+                        <img src="https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=600&q=80" alt="Galaxias y Multiverso" class="w-full h-48 object-cover hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/1e1b4b/a855f7?text=Universo+Burbuja'">
+                        <div class="p-3 bg-slate-950 text-xs font-mono text-purple-300">Figura 1.1: Universos Burbuja en Expansión Inflacionaria.</div>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-purple-900/60">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=600&q=80" alt="Superposición cuántica" class="w-full h-48 object-cover hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/1e1b4b/06b6d4?text=Multiverso+Cuantico'">
+                        <div class="p-3 bg-slate-950 text-xs font-mono text-cyan-300">Figura 1.2: Red de Universos Cuánticos Paralelos.</div>
+                    </div>
+                    <div class="rounded-xl overflow-hidden border border-purple-900/60">
+                        <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&w=600&q=80" alt="Túnel espacial" class="w-full h-48 object-cover hover:scale-105 transition duration-500" onerror="this.src='https://placehold.co/600x400/1e1b4b/ec4899?text=Puentes+Einstein-Rosen'">
+                        <div class="p-3 bg-slate-950 text-xs font-mono text-pink-300">Figura 1.3: Conexiones mediante Agujeros de Gusano.</div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- =========================================================
+             PÁGINA 2: CONTENIDO PRINCIPAL (Rúbrica §3 - Contenido Principal)
+             ========================================================= -->
+        <section id="contenido" class="pagina-seccion space-y-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <h2 class="font-orbitron text-3xl font-extrabold text-white">
+                    Los 4 Niveles del Multiverso según <span class="text-purple-400">Max Tegmark</span>
+                </h2>
+                <p class="text-slate-400 text-sm md:text-base">
+                    El cosmólogo de MIT, Max Tegmark, ha categorizado los universos paralelos en cuatro niveles científicos según su grado de alejamiento y leyes físicas.
+                </p>
+            </div>
+
+            <!-- Rejilla de los 4 Niveles Obligatorios -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <!-- Nivel 1 -->
+                <article class="glass-panel p-6 md:p-8 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-purple-900/80 text-purple-200 text-xs px-3 py-1 rounded-full font-mono">Nivel I</span>
+                        <h3 class="font-orbitron font-bold text-xl text-purple-300">Universo Infinito (Más allá del Horizonte)</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Es una consecuencia directa de un universo espacialmente infinito. Dado que la materia se organiza de formas finitas, inevitablemente existirán regiones del espacio tan lejanas que repetirán la configuración de nuestro propio planeta.
+                        </p>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-purple-900/40 text-xs text-slate-400">
+                            <strong>Características:</strong> Mismas leyes físicas, constantes idénticas, fuera del horizonte observable ($>10^{10^{115}}$ metros).
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Nivel 2 -->
+                <article class="glass-panel p-6 md:p-8 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-blue-900/80 text-blue-200 text-xs px-3 py-1 rounded-full font-mono">Nivel II</span>
+                        <h3 class="font-orbitron font-bold text-xl text-blue-300">Universos Burbuja (Inflación Eterna)</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Basado en las teorías de Alan Guth. Mientras el hiperespacio se expande a velocidades superlumínicas, ciertas zonas se detienen sufriendo un Big Bang propio, creando universos aislados como burbujas en ebullición.
+                        </p>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-blue-900/40 text-xs text-slate-400">
+                            <strong>Características:</strong> Mismas ecuaciones fundamentales de la física pero con constantes físicas diferentes (masa del electrón, velocidad de la luz, etc.).
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Nivel 3 -->
+                <article class="glass-panel p-6 md:p-8 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-cyan-900/80 text-cyan-200 text-xs px-3 py-1 rounded-full font-mono">Nivel III</span>
+                        <h3 class="font-orbitron font-bold text-xl text-cyan-300">Muchos Mundos de la Física Cuántica</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            Formulada por Hugh Everett. Postula que los eventos cuánticos no eligen un solo resultado, sino que la realidad se desdobla en múltiples ramas simultáneas donde cada posibilidad física toma lugar.
+                        </p>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-cyan-900/40 text-xs text-slate-400">
+                            <strong>Características:</strong> Ocurre en el espacio de Hilbert dimensional. Tus versiones paralelas coexisten en el mismo tiempo y espacio pero desfasadas cuánticamente.
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Nivel 4 -->
+                <article class="glass-panel p-6 md:p-8 space-y-4 flex flex-col justify-between">
+                    <div class="space-y-3">
+                        <span class="bg-pink-900/80 text-pink-200 text-xs px-3 py-1 rounded-full font-mono">Nivel IV</span>
+                        <h3 class="font-orbitron font-bold text-xl text-pink-300">Estructuras Matemáticas Totales</h3>
+                        <p class="text-slate-300 text-sm leading-relaxed">
+                            El nivel más abstracto. Establece que cualquier estructura matemática formalmente coherente corresponde a un universo real existente. No existen limitaciones de simetría o física.
+                        </p>
+                        <div class="bg-slate-950/60 p-3 rounded-lg border border-pink-900/40 text-xs text-slate-400">
+                            <strong>Características:</strong> Leyes de la física completamente distintas, ecuaciones no humanas, estructuras sin tiempo o espacio tradicional.
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <!-- BOTÓN VISIBLE PARA REGRESAR A INICIO (Rúbrica §3) -->
+            <div class="text-center pt-6">
+                <button onclick="cambiarPagina('inicio')" class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-purple-500/50 text-purple-300 font-semibold text-sm transition">
+                    <i class="fa-solid fa-house mr-2"></i> Regresar a la Página de Inicio
+                </button>
+            </div>
+
+        </section>
+
+        <!-- =========================================================
+             PÁGINA 3: INFORMACIÓN ADICIONAL CON TABLA AVANZADA (Rúbrica §3)
+             Requiere: <th>, <tr>, <td>, colores, bordes, colspan y rowspan
+             ========================================================= -->
+        <section id="adicional" class="pagina-seccion space-y-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <h2 class="font-orbitron text-3xl font-extrabold text-white">
+                    Matriz Comparativa de <span class="text-cyan-400">Universos y Constantes</span>
+                </h2>
+                <p class="text-slate-400 text-sm">
+                    Tabla técnica avanzada en HTML que detalla las variaciones físicas y dimensionales en las realidades hipotéticas del Multiverso.
+                </p>
+            </div>
+
+            <!-- TABLA AVANZADA CON COLSPAN Y ROWSPAN EXPLÍCITOS -->
+            <div class="overflow-x-auto">
+                <table class="tabla-multiverso-avanzada">
+                    <thead>
+                        <tr>
+                            <!-- ROWSPAN: Combina filas en el encabezado principal -->
+                            <th rowspan="2" class="text-center">Categoría del Multiverso</th>
+                            <th rowspan="2">Nivel según Tegmark</th>
+                            <!-- COLSPAN: Combina 2 columnas en el sub-encabezado -->
+                            <th colspan="2" class="text-center">Propiedades de la Realidad</th>
+                            <th rowspan="2">Constantes Físicas</th>
+                            <th rowspan="2">Estatus Científico</th>
+                        </tr>
+                        <tr>
+                            <th class="text-center">Dimensiones</th>
+                            <th class="text-center">Geometría</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- BLOQUE 1: ROWSPAN para agrupar Universos Cosmológicos -->
+                        <tr>
+                            <td rowspan="2" class="font-bold text-purple-300 text-center bg-purple-950/30">
+                                Multiverso Cosmológico<br><span class="text-[10px] text-slate-400 font-normal">(Espacio Exterior)</span>
+                            </td>
+                            <td class="font-semibold text-white">Nivel I: Esfera Inobservable</td>
+                            <td class="text-center">3D Espacio + 1D Tiempo</td>
+                            <td class="text-center text-cyan-300">Plana ($\Omega = 1$)</td>
+                            <td>Idénticas a la Tierra</td>
+                            <td class="text-emerald-400 font-mono">Alta Probabilidad</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-white">Nivel II: Inflacionario</td>
+                            <td class="text-center">3D a 10D Branas</td>
+                            <td class="text-center text-cyan-300">Burbujas Abiertas</td>
+                            <td class="text-amber-400">Variables por Universo</td>
+                            <td class="text-emerald-400 font-mono">Hipótesis Aceptada</td>
+                        </tr>
+
+                        <!-- BLOQUE 2: ROWSPAN para agrupar Universos Cuánticos -->
+                        <tr>
+                            <td rowspan="2" class="font-bold text-cyan-300 text-center bg-cyan-950/30">
+                                Multiverso Cuántico<br><span class="text-[10px] text-slate-400 font-normal">(Física Subatómica)</span>
+                            </td>
+                            <td class="font-semibold text-white">Nivel III: Ramificación Cuántica</td>
+                            <td class="text-center">Espacio de Hilbert Infinito</td>
+                            <td class="text-center text-cyan-300">Superposición Vectorial</td>
+                            <td>Fijas en el Origen</td>
+                            <td class="text-amber-400 font-mono">En Debate Teórico</td>
+                        </tr>
+                        <tr>
+                            <td class="font-semibold text-white">Líneas Temporales Alternas</td>
+                            <td class="text-center">3D + Tiempo Ramificado</td>
+                            <td class="text-center text-cyan-300">Divergente</td>
+                            <td>Constantes Similares</td>
+                            <td class="text-amber-400 font-mono">Interpretativa</td>
+                        </tr>
+
+                        <!-- BLOQUE 3: COLSPAN en el pie o resumen de fila para mostrar combinación total -->
+                        <tr class="bg-purple-900/40">
+                            <td font-bold text-pink-300 text-center bg-pink-950/30">
+                                Multiverso Matemático
+                            </td>
+                            <td class="font-semibold text-white">Nivel IV: Simetría Absoluta</td>
+                            <!-- COLSPAN que abarca Dimensiones y Geometría -->
+                            <td colspan="2" class="text-center text-pink-300 font-bold">
+                                Configuración Variable N-Dimensional
+                            </td>
+                            <td class="text-pink-300">Totalmente Arbitrarias</td>
+                            <td class="text-slate-400 font-mono">Especulación Pura</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="bg-slate-950 text-xs text-slate-400">
+                            <!-- COLSPAN de 6 columnas para abarcarlas todas -->
+                            <td colspan="6" class="p-3 text-center italic border-t border-purple-500/40">
+                                Cuadro de referencia elaborado para la asignatura de Construye Aplicaciones Web (Submódulo 1).
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <!-- BOTÓN VISIBLE PARA REGRESAR A INICIO (Rúbrica §3) -->
+            <div class="text-center pt-6">
+                <button onclick="cambiarPagina('inicio')" class="px-6 py-3 rounded-xl bg-slate-900 hover:bg-slate-800 border border-purple-500/50 text-purple-300 font-semibold text-sm transition">
+                    <i class="fa-solid fa-house mr-2"></i> Regresar a la Página de Inicio
+                </button>
+            </div>
+
+        </section>
+
+        <!-- =========================================================
+             PÁGINA 4: CONTACTO (Rúbrica §3 - Formulario de Contacto)
+             Formulario completo con campos identificados y botones visibles
+             ========================================================= -->
+        <section id="contacto" class="pagina-seccion space-y-10">
+            
+            <div class="text-center max-w-3xl mx-auto space-y-3">
+                <h2 class="font-orbitron text-3xl font-extrabold text-white">
+                    Formulario de Contacto <span class="text-pink-400">Interdimensional</span>
+                </h2>
+                <p class="text-slate-400 text-sm">
+                    Envía tus dudas, observaciones cosmológicas o reportes de anomalías cuánticas al equipo académico.
+                </p>
+            </div>
+
+            <div class="max-w-xl mx-auto glass-panel p-8 rounded-3xl border border-purple-500/40 shadow-2xl">
+                
+                <!-- Alerta simulada de envío -->
+                <div id="alerta-envio" class="hidden mb-6 p-4 rounded-xl bg-emerald-950/90 border border-emerald-500 text-emerald-200 text-xs flex items-center gap-3">
+                    <i class="fa-solid fa-circle-check text-emerald-400 text-lg"></i>
+                    <div>
+                        <strong>¡Formulario procesado correctamente!</strong>
+                        <p>Tu mensaje fue registrado para la práctica del Submódulo 1.</p>
+                    </div>
+                </div>
+
+                <!-- FORMULARIO DE CONTACTO OBLIGATORIO -->
+                <form id="formularioContacto" onsubmit="enviarFormulario(event)" class="space-y-5">
+                    
+                    <!-- Campo 1: Nombre -->
+                    <div class="space-y-1.5">
+                        <label for="campo-nombre" class="block text-xs font-mono font-semibold text-purple-300 uppercase">
+                            <i class="fa-solid fa-user text-purple-400 mr-1"></i> Nombre Completo del Alumno / Usuario:
+                        </label>
+                        <input type="text" id="campo-nombre" required placeholder="Ej. Juan Pérez López" class="w-full bg-slate-900/90 border border-purple-900/70 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-sm outline-none transition">
+                    </div>
+
+                    <!-- Campo 2: Email -->
+                    <div class="space-y-1.5">
+                        <label for="campo-email" class="block text-xs font-mono font-semibold text-purple-300 uppercase">
+                            <i class="fa-solid fa-envelope text-purple-400 mr-1"></i> Correo Electrónico:
+                        </label>
+                        <input type="email" id="campo-email" required placeholder="correo@ejemplo.com" class="w-full bg-slate-900/90 border border-purple-900/70 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-sm outline-none transition">
+                    </div>
+
+                    <!-- Campo 3: Selección de Universo de Origen -->
+                    <div class="space-y-1.5">
+                        <label for="campo-universo" class="block text-xs font-mono font-semibold text-purple-300 uppercase">
+                            <i class="fa-solid fa-atom text-purple-400 mr-1"></i> Tipo de Multiverso de Interés:
+                        </label>
+                        <select id="campo-universo" required class="w-full bg-slate-900/90 border border-purple-900/70 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-sm outline-none transition">
+                            <option value="" disabled selected>Selecciona una opción...</option>
+                            <option value="nivel1">Nivel I: Universo Infinito</option>
+                            <option value="nivel2">Nivel II: Universos Burbuja</option>
+                            <option value="nivel3">Nivel III: Ramificación Cuántica</option>
+                            <option value="nivel4">Nivel IV: Estructuras Matemáticas</option>
+                        </select>
+                    </div>
+
+                    <!-- Campo 4: Mensaje -->
+                    <div class="space-y-1.5">
+                        <label for="campo-mensaje" class="block text-xs font-mono font-semibold text-purple-300 uppercase">
+                            <i class="fa-solid fa-comment-dots text-purple-400 mr-1"></i> Mensaje o Comentario:
+                        </label>
+                        <textarea id="campo-mensaje" rows="4" required placeholder="Escribe aquí tu consulta o resumen de la práctica..." class="w-full bg-slate-900/90 border border-purple-900/70 focus:border-purple-500 rounded-xl px-4 py-3 text-white text-sm outline-none transition resize-none"></textarea>
+                    </div>
+
+                    <!-- BOTONES VISIBLES EN EL FORMULARIO (Rúbrica §3) -->
+                    <div class="flex flex-col sm:flex-row gap-3 pt-2">
+                        <button type="submit" class="flex-1 py-3.5 rounded-xl font-orbitron font-bold text-white bg-gradient-to-r from-purple-600 to-pink-600 hover:opacity-90 shadow-lg shadow-purple-600/30 transition text-sm">
+                            <i class="fa-solid fa-paper-plane mr-2"></i> Enviar Formulario
+                        </button>
+                        <button type="button" onclick="cambiarPagina('inicio')" class="px-5 py-3.5 rounded-xl font-semibold bg-slate-800 hover:bg-slate-700 text-purple-300 border border-purple-800 text-sm transition">
+                            <i class="fa-solid fa-house mr-1"></i> Ir a Inicio
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- =========================================================
+         REQUISITO 2: SEGUNDA MARQUESINA (<marquee>) - DATOS INSTITUCIONALES
+         ========================================================= -->
+    <div class="marquee-box py-2 text-purple-300 text-xs shadow-inner z-50">
+        <marquee behavior="scroll" direction="right" scrollamount="5">
+            📌 <strong>SUBMÓDULO 1:</strong> CONSTRUYE APLICACIONES WEB &nbsp;&nbsp;|&nbsp;&nbsp;
+            ✨ <strong>FECHA LÍMITE DE ENTREGA:</strong> MIÉRCOLES 11 DE NOVIEMBRE DE 2026 &nbsp;&nbsp;|&nbsp;&nbsp;
+            💻 <strong>PÁGINA PUBLICADA EN GITHUB PAGES:</strong> Recuerda entregar únicamente el enlace desplegado en Google Classroom.
+        </marquee>
+    </div>
+
+    <!-- PIE DE PÁGINA (FOOTER) -->
+    <footer class="bg-slate-950 border-t border-purple-900/60 text-slate-400 py-6 px-4">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4 text-xs">
+            <div class="text-center md:text-left space-y-1">
+                <p class="font-orbitron font-bold text-white text-sm">Práctica "El Universo / El Multiverso"</p>
+                <p class="text-slate-500">Página Web Responsiva con CSS Externo y Tabla Avanzada.</p>
+            </div>
+            <div class="flex gap-4">
+                <button onclick="cambiarPagina('inicio')" class="hover:text-purple-300">Inicio</button>
+                <span>•</span>
+                <button onclick="cambiarPagina('contenido')" class="hover:text-purple-300">Contenido</button>
+                <span>•</span>
+                <button onclick="cambiarPagina('adicional')" class="hover:text-purple-300">Tabla</button>
+                <span>•</span>
+                <button onclick="cambiarPagina('contacto')" class="hover:text-purple-300">Contacto</button>
+            </div>
+            <div class="text-slate-500">
+                Submódulo 1 - 2026
+            </div>
+        </div>
+    </footer>
+
+    <!-- LÓGICA JAVASCRIPT PARA INTERACCIÓN Y NAVEGACIÓN SANGRADA SIN ENLACES ROTOS -->
+    <script>
+        // Función de navegación entre las 4 páginas del sitio
+        function cambiarPagina(idPagina) {
+            // Ocultar todas las páginas
+            const paginas = document.querySelectorAll('.pagina-seccion');
+            paginas.forEach(p => p.classList.remove('active'));
+
+            // Mostrar la página solicitada
+            const paginaObjetivo = document.getElementById(idPagina);
+            if (paginaObjetivo) {
+                paginaObjetivo.classList.add('active');
+            }
+
+            // Actualizar botones del menú de navegación
+            const botonesNav = document.querySelectorAll('.btn-nav');
+            botonesNav.forEach(btn => {
+                btn.className = "btn-nav px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition text-slate-300 hover:text-white hover:bg-purple-900/40";
+            });
+
+            const botonActivo = document.getElementById(`nav-${idPagina}`);
+            if (botonActivo) {
+                botonActivo.className = "btn-nav px-4 py-2 rounded-xl text-xs md:text-sm font-semibold transition bg-purple-600 text-white shadow-md";
+            }
+
+            // Scroll suave hacia la parte superior
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Envío interactivo del formulario de contacto
+        function enviarFormulario(event) {
+            event.preventDefault();
+            const alerta = document.getElementById('alerta-envio');
+            alerta.classList.remove('hidden');
+
+            document.getElementById('formularioContacto').reset();
+
+            setTimeout(() => {
+                alerta.classList.add('hidden');
+            }, 4000);
+        }
+    </script>
+</body>
+</html>
